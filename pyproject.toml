@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cody-special"
-version = "1.0.0"
+version = "1.0.1"
 description = "High-precision error functions and normal distribution (Cody's algorithm)"
 authors = ["vollib team"]
 license = "MIT"
