@@ -32,7 +32,9 @@ merchantability, fitness for a particular purpose, or non-infringement.
 
 from math import floor, fabs, exp
 
+from cody_special.numba_helper import maybe_jit
 
+@maybe_jit(cache=True, nopython=True, nogil=True)
 def d_int(x):
     return floor(x) if x > 0 else -floor(-x)
 
@@ -64,7 +66,7 @@ XBIG = 26.543
 XHUGE = 6.71e7
 XMAX = 2.53e307
 
-
+@maybe_jit(cache=True, nopython=True)
 def calerf(x, jint):
     """
     Evaluate erf(x), erfc(x), or exp(x*x)*erfc(x) for a real argument x.
@@ -161,7 +163,7 @@ def calerf(x, jint):
 
     return fix_up_for_negative_argument_erf_etc(jint, result, x)
 
-
+@maybe_jit(cache=True, nopython=True, nogil=True)
 def fix_up_for_negative_argument_erf_etc(jint, result, x):
     """Fix up for negative argument, erf, etc."""
     if jint == 0:
@@ -184,7 +186,7 @@ def fix_up_for_negative_argument_erf_etc(jint, result, x):
                 result = y + y - result
     return result
 
-
+@maybe_jit(cache=True, nopython=True)
 def erf_cody(x):
     """
     Compute the error function erf(x).
@@ -203,7 +205,7 @@ def erf_cody(x):
     """
     return calerf(x, 0)
 
-
+@maybe_jit(cache=True, nopython=True)
 def erfc_cody(x):
     """
     Compute the complementary error function erfc(x) = 1 - erf(x).
@@ -222,7 +224,7 @@ def erfc_cody(x):
     """
     return calerf(x, 1)
 
-
+@maybe_jit(cache=True, nopython=True)
 def erfcx_cody(x):
     """
     Compute the scaled complementary error function erfcx(x) = exp(x*x) * erfc(x).

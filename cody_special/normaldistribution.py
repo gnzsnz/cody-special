@@ -41,6 +41,8 @@ from math import fabs, sqrt, exp, log
 
 from cody_special.constants import DBL_MAX, DBL_EPSILON, ONE_OVER_SQRT_TWO_PI, ONE_OVER_SQRT_TWO
 from cody_special.erf_cody import erfc_cody
+from cody_special.numba_helper import maybe_jit
+
 
 norm_cdf_asymptotic_expansion_first_threshold = -10.0
 norm_cdf_asymptotic_expansion_second_threshold = -1 / sqrt(DBL_EPSILON)
@@ -106,7 +108,7 @@ F5 = 1.84631831751005468180E-5
 F6 = 1.42151175831644588870E-7
 F7 = 2.04426310338993978564E-15
 
-
+@maybe_jit(cache=True, nopython=True, nogil=True)
 def norm_pdf(x):
     """
     Compute the standard normal probability density function (PDF).
@@ -123,7 +125,7 @@ def norm_pdf(x):
     """
     return ONE_OVER_SQRT_TWO_PI * exp(-.5 * x * x)
 
-
+@maybe_jit(cache=True, nopython=True)
 def norm_cdf(z):
     """
     Compute the standard normal cumulative distribution function (CDF).
@@ -170,7 +172,7 @@ def norm_cdf(z):
         return -norm_pdf(z) * sum / z
     return 0.5 * erfc_cody(-z * ONE_OVER_SQRT_TWO)
 
-
+@maybe_jit(cache=True, nopython=True, nogil=True)
 def inverse_norm_cdf(u):
     """
     Compute the inverse of the standard normal CDF (quantile function).

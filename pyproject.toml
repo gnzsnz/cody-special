@@ -10,7 +10,7 @@ keywords = ["error function", "erf", "erfc", "normal distribution", "cdf", "stat
 packages = [{include = "cody_special"}]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">3.9"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.0"
